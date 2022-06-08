@@ -61,11 +61,11 @@ echo ""
 echo "Checking if all necessary directories and files are accessible ..."
 dirs_exist="pi_config dtn7-rs-release networking"
 files_exist="
-    setup_host.sh setup_mesh.sh
+    setup_host.sh setup_ap.sh
     pi_config/userconf
-    dtn7-rs-release/dtnd dtn7-rs-release/dtnquery dtn7-rs-release/dtnsend dtn7-rs-release/dtnrecv dtn7-rs-release/dtntrigger
-    networking/hostapd.conf networking/routed-ap.conf networking/wlan0 networking/start-batman-adv.sh"
-x_flag="setup_host.sh setup_mesh.sh networking/start-batman-adv.sh"
+    dtn7-rs-release/dtnd dtn7-rs-release/dtnquery dtn7-rs-release/dtnsend dtn7-rs-release/dtnrecv
+    networking/hostapd.conf networking/routed-ap.conf networking/wlan0"
+x_flag="setup_host.sh setup_ap.sh"
 for dir in $dirs_exist; do
     [[ -d "$dir" ]] || die "directory '$dir' not found"
 done
@@ -102,7 +102,6 @@ sudo cp -v dtnd "$usrbin"
 sudo cp -v dtnquery "$usrbin"
 sudo cp -v dtnrecv "$usrbin"
 sudo cp -v dtnsend "$usrbin"
-sudo cp -v dtntrigger "$usrbin"
 cd ..
 
 
@@ -120,7 +119,7 @@ sudo mkdir "$userdir"
 sudo chown $local_username:$cur_group "$userdir"
 cp -Rv networking "$userdir"
 cp -v setup_host.sh "$userdir"
-cp -v setup_mesh.sh "$userdir"
+cp -v setup_ap.sh "$userdir"
 [[ -f autogen_hostname.sh ]] && cp -v autogen_hostname.sh "$userdir" || skipping "autogen_hostname.sh"
 [[ -f show_network_drivers.sh ]] && cp -v show_network_drivers.sh "$userdir" || skipping "show_network_drivers.sh"
 

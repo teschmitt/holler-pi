@@ -46,7 +46,7 @@ fi
 
 # check for all mandatory directories and files
 dirs_exist="networking"
-files_exist="networking/start-batman-adv.sh"
+files_exist="networking/wlan0 networking/hostapd.conf networking/routed-ap.conf"
 for dir in $dirs_exist; do
     [[ -d "$dir" ]] || die "directory '$dir' not found"
 done
@@ -58,10 +58,6 @@ username=$(whoami)
 cur_group=$(id -gn)
 sudo chown -R $username:$cur_group .
 
-echo ""
-echo "Copying start script ..."
-cp -v networking/start-batman-adv.sh .
-
 
 # install software
 echo ""
@@ -72,15 +68,14 @@ if [[ online -eq 0 ]]; then
     echo "Updating system and installing software ..."
     sudo apt update
     sudo apt -y upgrade
-    if [[ -z $is_ap ]]; then
-        sudo apt -y install batctl
-    else
-        sudo DEBIAN_FRONTEND=noninteractive apt install -y batctl hostapd dnsmasq netfilter-persistent iptables-persistent
-    fi
+    sudo DEBIAN_FRONTEND=noninteractive apt install -y hostapd dnsmasq netfilter-persistent iptables-persistent
 else
     die "no network connection, please check network configuration"
 fi
 
 
+# copy files
 echo ""
-echo "Setup finished, you can now run the setup_mesh.sh script."
+echo "Copy networking files ..."
+sudo cp -v networking/wlan0 /etc/network/interfaces.d/
+

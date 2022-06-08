@@ -112,3 +112,6 @@ if ! shopt -oq posix; then
   fi
 fi
 alias l="ls -lhA"
+
+
+dtnd --nodeid $(hostname) --cla mtcp --endpoint incoming
